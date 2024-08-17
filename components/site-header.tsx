@@ -10,22 +10,17 @@ import { useEffect, useState } from "react";
 const menuItem = [
   {
     id: 1,
-    label: "Features",
-    href: "/features",
+    label: "About",
+    href: "#",
   },
   {
     id: 2,
-    label: "Pricing",
+    label: "Features",
     href: "#",
   },
   {
     id: 3,
-    label: "Careers",
-    href: "#",
-  },
-  {
-    id: 4,
-    label: "Contact Us",
+    label: "Team",
     href: "#",
   },
 ];
@@ -99,20 +94,20 @@ export function SiteHeader() {
     <>
       <header className="fixed left-0 top-0 z-50 w-full translate-y-[-1rem] animate-fade-in border-b opacity-0 backdrop-blur-[12px] [--animation-delay:600ms]">
         <div className="container flex h-[3.5rem] items-center justify-between">
-          <Link className="text-md flex items-center" href="/">
-          ComplaintSense
+          <Link className="text-md flex items-center font-bold" href="/">
+            ComplaintSense
           </Link>
 
           <div className="ml-auto flex h-full items-center">
-            <Link className="mr-6 text-sm" href="/signin">
+            <Link className="mr-6 text-sm" href="/sign-in">
               Log in
             </Link>
             <Link
               className={cn(
                 buttonVariants({ variant: "secondary" }),
-                "mr-6 text-sm"
+                "mr-6 text-sm "
               )}
-              href="/signup"
+              href="/sign-up"
             >
               Sign up
             </Link>
@@ -140,8 +135,8 @@ export function SiteHeader() {
           )}
         >
           <div className="container flex h-[3.5rem] items-center justify-between">
-            <Link className="text-md flex items-center" href="/">
-              Magic UI
+            <Link className="text-md flex items-center font-bold" href="/">
+              ComplaintSense
             </Link>
 
             <button
@@ -165,9 +160,8 @@ export function SiteHeader() {
                 className="border-grey-dark pl-6 py-0.5 border-b md:border-none"
               >
                 <Link
-                  className={`hover:text-grey flex h-[var(--navigation-height)] w-full items-center text-xl transition-[color,transform] duration-300 md:translate-y-0 md:text-sm md:transition-colors ${
-                    hamburgerMenuIsOpen ? "[&_a]:translate-y-0" : ""
-                  }`}
+                  className={`hover:text-grey flex h-[var(--navigation-height)] w-full items-center text-xl transition-[color,transform] duration-300 md:translate-y-0 md:text-sm md:transition-colors ${hamburgerMenuIsOpen ? "[&_a]:translate-y-0" : ""
+                    }`}
                   href={item.href}
                 >
                   {item.label}
