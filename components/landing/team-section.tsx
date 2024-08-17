@@ -1,4 +1,4 @@
-export default function ClientSection() {
+export default function TeamSection() {
   return (
     <section
       id="clients"
