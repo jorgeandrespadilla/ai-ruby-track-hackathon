@@ -1,4 +1,5 @@
-import ClientSection from "@/components/landing/client-section";
+import TeamSection from "@/components/landing/team-section";
+import { FeatureSection } from "@/components/landing/features";
 import HeroSection from "@/components/landing/hero-section";
 import Particles from "@/components/magicui/particles";
 import { SphereMask } from "@/components/magicui/sphere-mask";
@@ -7,7 +8,8 @@ export default async function Page() {
   return (
     <>
       <HeroSection />
-      <ClientSection />
+      <FeatureSection />
+      <TeamSection />
       <SphereMask />
       <Particles
         className="absolute inset-0 -z-10"

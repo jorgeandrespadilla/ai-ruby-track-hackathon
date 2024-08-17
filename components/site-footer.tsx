@@ -7,7 +7,7 @@ type Link = {
  
 const links: Link[] = [
   { text: "About", url: "#" },
-  { text: "Services", url: "#" },
+  { text: "Features", url: "#" },
   { text: "Team", url: "#" },
 ];
  
@@ -16,11 +16,11 @@ export function SiteFooter() {
     <footer className="px-5 py-5 lg:px-10">
       <div className="flex w-full flex-col items-center justify-between gap-x-5 gap-y-5 md:flex-row">
         <a href="#" className="flex items-center gap-x-2">
-          <img
+          {/*<img
             className="h-8 w-8 rounded-full"
             src="https://magicui.design/icon.png"
             alt=""
-          />
+          />*/}
           <h2 className="font-bold text-neutral-900 dark:text-white">
           ComplaintSense 
           </h2>
@@ -36,7 +36,7 @@ export function SiteFooter() {
           ))}
         </ul>
         <a
-          href="/pricing"
+          href="/sign-in"
           className="inline-flex w-fit items-center justify-center gap-x-1 rounded-md bg-neutral-800 px-6 py-2 text-sm font-semibold tracking-tighter text-white ring-1 transition duration-200 hover:ring-2 hover:ring-neutral-900 hover:ring-offset-2 dark:bg-white dark:text-black dark:hover:ring-white dark:hover:ring-offset-black lg:h-12 lg:text-base"
         >
           Give it a try
