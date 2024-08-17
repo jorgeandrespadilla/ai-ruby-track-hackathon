@@ -52,3 +52,25 @@ This project is built for the Ruby Track of the Headstarter AI Hackathon. The pr
 3. Create a copy of the `.env.local.example` file and rename it to `.env.local`. Fill in the environment variables with your Firebase project configuration.
 4. Run the development server by running `npm run dev`.
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## Database Migrations
+
+To generate a new migration, run the following command:
+
+```bash
+npm run db:generate
+```
+
+To run the migrations, use the following command:
+
+```bash
+npm run db:migrate
+```
+
+To check the consistency of the migrations, run the following command:
+
+```bash
+npm run db:check
+```
+
+> For more information, see the [Drizzle Kit documentation](https://orm.drizzle.team/learn/tutorials/drizzle-with-supabase).
