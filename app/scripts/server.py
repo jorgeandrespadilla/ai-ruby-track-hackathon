@@ -3,7 +3,7 @@ import requests
 import assemblyai as aai
 
 app = Flask(__name__)
-aai.settings.api_key = "30b12e25eb8f47f88748c07623215f02"
+aai.settings.api_key = ""
 transcriber = aai.Transcriber()
 
 NEXT_JS_API_URL = "http://localhost:3000/api/summarize"
