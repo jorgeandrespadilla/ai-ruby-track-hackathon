@@ -38,12 +38,11 @@ export async function POST(req: NextRequest) {
             { role: "system", content: SYSTEM_PROMPT },
             { role: "user", content: data.transcript },
         ],
-        model: "gpt-4o",
+        model: "gpt-4o-mini",
         response_format: {
             type: 'json_schema',
             json_schema: {
                 name: 'complaints',
-                strict: true,
                 schema: {
                     "type": "object",
                     "properties": {
@@ -65,7 +64,6 @@ export async function POST(req: NextRequest) {
                         },
                         "date_summary_created": {
                             "type": ["string", "null"],
-                            "format": "date-time",
                             "description": "Date when the summary was generated. Can be null if not a complaint."
                         },
                         "sub_product": {
@@ -90,7 +88,6 @@ export async function POST(req: NextRequest) {
                         },
                         "date_received": {
                             "type": ["string", "null"],
-                            "format": "date-time",
                             "description": "Date when the complaint was received. Can be null if not a complaint."
                         },
                         "status": {
@@ -102,7 +99,7 @@ export async function POST(req: NextRequest) {
                             "description": "Sort order, based on relevance from the knowledge base. Can be null if not a complaint."
                         }
                     },
-                    "required": ["_type", "isComplaint", "summary"],
+                    "required": ["type", "isComplaint", "summary", "product", "sub_product"],
                     "additionalProperties": false
                 }
             }
