@@ -12,17 +12,10 @@ Return the result in the following JSON format:[
     "isComplaint": bool,  
     "summary": str | null, 
 
-    "type": "string",  // Required string to hold the type of file, e.g., text, img, audio, etc.
     "product": "string | null",  // Product associated with the complaint. Can be null if not a complaint.
-    "date_summary_created": "string | null",  // Date when the summary was generated. Can be null if not a complaint.
     "sub_product": "string | null",  // Sub-product category. Can be null if not a complaint.
-    "tags": "string | null",  // Tags associated with the complaint, can be null.
-    "company_response": "string | null",  // Response from the company. Can be null if not a complaint.
     "rating": "string | null",  // Rating of the product or service. Can be null if not a complaint.
     "company": "string | null",  // Name of the company. Can be null if not a complaint.
-    "date_received": "string | null",  // Date when the complaint was received. Can be null if not a complaint.
-    "status": "string | null",  // Status of the complaint: open, in review, closed. Can be null if not a complaint.
-    "sort": number | null  // Sort order, based on relevance from the knowledge base. Can be null if not a complaint.
 }]
 `
 interface RequestData {
@@ -54,29 +47,13 @@ export async function POST(req: NextRequest) {
                             "type": ["string", "null"],
                             "description": "Summary of the complaint. Can be null if not a complaint."
                         },
-                        "type": {
-                            "type": "string",
-                            "description": "Required string to hold the type of file, e.g., text, img, audio, etc."
-                        },
                         "product": {
                             "type": ["string", "null"],
                             "description": "Product associated with the complaint. Can be null if not a complaint."
                         },
-                        "date_summary_created": {
-                            "type": ["string", "null"],
-                            "description": "Date when the summary was generated. Can be null if not a complaint."
-                        },
                         "sub_product": {
                             "type": ["string", "null"],
                             "description": "Sub-product category. Can be null if not a complaint."
-                        },
-                        "tags": {
-                            "type": ["string", "null"],
-                            "description": "Tags associated with the complaint, can be null."
-                        },
-                        "company_response": {
-                            "type": ["string", "null"],
-                            "description": "Response from the company. Can be null if not a complaint."
                         },
                         "rating": {
                             "type": ["string", "null"],
@@ -86,20 +63,8 @@ export async function POST(req: NextRequest) {
                             "type": ["string", "null"],
                             "description": "Name of the company. Can be null if not a complaint."
                         },
-                        "date_received": {
-                            "type": ["string", "null"],
-                            "description": "Date when the complaint was received. Can be null if not a complaint."
-                        },
-                        "status": {
-                            "type": ["string", "null"],
-                            "description": "Status of the complaint: open, in review, closed. Can be null if not a complaint."
-                        },
-                        "sort": {
-                            "type": ["number", "null"],
-                            "description": "Sort order, based on relevance from the knowledge base. Can be null if not a complaint."
-                        }
                     },
-                    "required": ["type", "isComplaint", "summary", "product", "sub_product"],
+                    "required": ["isComplaint", "summary", "product", "sub_product"],
                     "additionalProperties": false
                 }
             }
