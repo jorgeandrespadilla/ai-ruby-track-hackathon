@@ -8,6 +8,13 @@
       "when": 1723933789461,
       "tag": "0000_awesome_old_lace",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1724003602102,
+      "tag": "0001_clumsy_white_tiger",
+      "breakpoints": true
     }
   ]
 }

@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AlignJustify, XIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useUser, UserButton } from "@clerk/nextjs";
 
 const menuItem = [
   {
@@ -26,6 +27,9 @@ const menuItem = [
 ];
 
 export function SiteHeader() {
+
+  const user = useUser();
+
   const mobilenavbarVariant = {
     initial: {
       opacity: 0,
@@ -98,20 +102,35 @@ export function SiteHeader() {
             ComplaintSense
           </Link>
 
-          <div className="ml-auto flex h-full items-center">
-            <Link className="mr-6 text-sm" href="/sign-in">
-              Log in
-            </Link>
-            <Link
-              className={cn(
-                buttonVariants({ variant: "secondary" }),
-                "mr-6 text-sm "
-              )}
-              href="/sign-up"
-            >
-              Sign up
-            </Link>
-          </div>
+          {user?.isSignedIn ? (
+            <div className="flex items-center space-x-4">
+              <Link
+                className={cn(
+                  buttonVariants({ variant: "secondary" }),
+                  "text-sm"
+                )}
+                href="/summarize"
+              >
+                Portal
+              </Link>
+              <UserButton />
+            </div>
+          )
+            : (<div className="ml-auto flex h-full items-center">
+              <Link className="mr-6 text-sm" href="/sign-in">
+                Log in
+              </Link>
+              <Link
+                className={cn(
+                  buttonVariants({ variant: "secondary" }),
+                  "mr-6 text-sm "
+                )}
+                href="/sign-up"
+              >
+                Sign up
+              </Link>
+            </div>)}
+
           <button
             className="ml-6 md:hidden"
             onClick={() => setHamburgerMenuIsOpen((open) => !open)}
