@@ -17,7 +17,7 @@ export default function TeamSection() {
                   alt="Team Member 1"
                   className="h-24 w-24 rounded-full object-cover"
                 />
-                <p className="mt-2 text-center text-sm font-medium text-gray-800">Name 1</p>
+                <p className="mt-2 text-center text-sm font-medium text-white">Jorge Andres Padilla</p>
               </li>
               <li className="flex flex-col items-center">
                 <img
@@ -25,7 +25,7 @@ export default function TeamSection() {
                   alt="Team Member 2"
                   className="h-24 w-24 rounded-full object-cover"
                 />
-                <p className="mt-2 text-center text-sm font-medium text-gray-800">Name 2</p>
+                <p className="mt-2 text-center text-sm font-medium text-white">Gabriela Padilla</p>
               </li>
               <li className="flex flex-col items-center">
                 <img
@@ -33,7 +33,7 @@ export default function TeamSection() {
                   alt="Team Member 3"
                   className="h-24 w-24 rounded-full object-cover"
                 />
-                <p className="mt-2 text-center text-sm font-medium text-gray-800">Name 3</p>
+                <p className="mt-2 text-center text-sm font-medium text-white">Jennifer Mena</p>
               </li>
               <li className="flex flex-col items-center">
                 <img
@@ -41,7 +41,7 @@ export default function TeamSection() {
                   alt="Team Member 4"
                   className="h-24 w-24 rounded-full object-cover"
                 />
-                <p className="mt-2 text-center text-sm font-medium text-gray-800">Name 4</p>
+                <p className="mt-2 text-center text-sm font-medium text-white">Guleed Nuh</p>
               </li>
             </ul>
           </div>
