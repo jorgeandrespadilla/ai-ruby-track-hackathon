@@ -7,7 +7,7 @@ interface SimilarComplaintsRequest {
   maxResults?: number;
 }
 
-interface SimilarComplaintsResponse {
+export interface SimilarComplaintsResponse {
   similarComplaints: SimilarComplaint[];
 }
 

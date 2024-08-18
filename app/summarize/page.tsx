@@ -1,9 +1,9 @@
 "use client"
 
-import { ChevronLeft, Loader2 } from 'lucide-react'
+import { ChevronLeft, Loader2, Search } from 'lucide-react'
 import * as React from 'react'
 import Link from 'next/link'
-import { buttonVariants } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Form, FormField, FormControl, FormItem, FormMessage } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import * as z from 'zod'
@@ -13,7 +13,8 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { NavBar } from './(components)/nav-bar'
 import FilePreview from './(components)/FilePreview'
-import { AnalysisResult } from '@/lib/types'
+import { AnalysisResult, SimilarComplaint } from '@/lib/types'
+import { SimilarComplaintsResponse } from '../api/similar-complaints/route'
 
 export const summarizeSchema = z.object({
   transcript: z.string().min(10),
@@ -33,6 +34,9 @@ export default function SummarizePage() {
   const [analysis, setAnalysis] = React.useState<AnalysisResult[] | null>(null)
   const [numberComplaints, setNumberComplaints] = React.useState<number>(0)
   const [file, setFile] = React.useState<any>();
+  const [similarComplaints, setSimilarComplaints] = React.useState<SimilarComplaint[] | null>(null)
+  const [isLoadingSimilarComplaints, setIsLoadingSimilarComplaints] = React.useState<boolean>(false)
+  const [transcript, setTranscript] = React.useState<string>('The service was terrible. I would not recommend it to anyone.')
 
   async function onSubmit(_data: FormData) {
     setIsLoading(true)
@@ -100,6 +104,29 @@ export default function SummarizePage() {
           description: 'Something went wrong. Please try again.',
         })
       });
+  }
+
+  const findSimilarComplaints = async (transcript: string) => {
+    try {
+      setIsLoadingSimilarComplaints(true)
+      const response = await fetch('/api/similar-complaints', {
+        method: 'POST',
+        body: JSON.stringify({ transcriptSummary: transcript }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to find similar complaints')
+      }
+
+      const data: SimilarComplaintsResponse = await response.json()
+      setSimilarComplaints(data.similarComplaints)
+    } catch (error) {
+      console.error('Error finding similar complaints:', error)
+      toast.error('Error', {
+        description: 'Something went wrong. Please try again.',
+      })
+    }
+    setIsLoadingSimilarComplaints(false)
   }
 
   return (
@@ -254,6 +281,50 @@ export default function SummarizePage() {
               }
               return null;
             })}
+          </div>
+          <div>
+            {transcript && (
+              <Button
+                variant='outline'
+                className='w-full'
+                disabled={isLoadingSimilarComplaints}
+                onClick={() => findSimilarComplaints(transcript)}
+              >
+                <Search className='mr-2 size-4' />
+                Find similar complaints
+              </Button>
+            )}
+          </div>
+          <div className='pb-4'>
+            <div>
+              {isLoadingSimilarComplaints && (
+                <div className="flex flex-row items-center mt-2 p-4 border rounded-md shadow-sm bg-[var(--color-three)]">
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  <span>Finding similar complaints...</span>
+                </div>
+              )}
+            </div>
+            <div>
+              {similarComplaints && similarComplaints.length === 0 && (
+                <div className="mt-2 p-4 border rounded-md shadow-sm bg-[var(--color-three)]">
+                  <span>No similar complaints found.</span>
+                </div>
+              )}
+            </div>
+            <div>
+              {similarComplaints && similarComplaints.length > 0 && (
+                <div>
+                  <h2 className="text-lg font-semibold">Similar Complaints</h2>
+                  <div className="mt-3 p-4 border rounded-md shadow-sm bg-[var(--color-three)]">
+                    {similarComplaints.map((complaint, index) => (
+                      <div key={index} className="mt-2">
+                        <p className="text-sm"><strong>Summary:</strong> {complaint.complaintSummary}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
