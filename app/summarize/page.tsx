@@ -68,7 +68,7 @@ export default function SummarizePage() {
     setAnalysis(data.analysis);
     getnumberComplaints(data.analysis);
 
-    saveComplaints(data);
+    // saveComplaints(data); // TODO: Uncomment this line to save complaints to the database
 
   }
 
