@@ -15,6 +15,20 @@
       "when": 1724003602102,
       "tag": "0001_clumsy_white_tiger",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1724010207745,
+      "tag": "0002_natural_sunspot",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1724012601249,
+      "tag": "0003_late_black_widow",
+      "breakpoints": true
     }
   ]
 }
