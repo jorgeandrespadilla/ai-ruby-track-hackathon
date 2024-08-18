@@ -25,7 +25,8 @@ interface RequestData {
 
 export async function POST(req: NextRequest) {
     try {
-        const transcript = await transcribeAudio();
+        const FILE_URL = 'https://storage.googleapis.com/aai-web-samples/5_common_sports_injuries.mp3';
+        const transcript = await transcribeAudio(FILE_URL);
 
         const data: RequestData = {
             transcript: transcript ?? '',

@@ -1,16 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { generateUniqueFilename, startsWithPrefixes } from '@/lib/utils';
+import { analyzeTranscript } from '@/lib/ai';
+import { transcribeAudio } from '@/lib/assemblyai';
+import { AnalysisResult } from '@/lib/types';
 
-export async function POST(req: NextRequest) {
+const SUPPORTED_FILE_TYPES = [
+  "image/png",
+  "image/jpg",
+  "image/jpeg",
+  "image/webp",
+  "audio/wav",
+  "audio/mp3",
+];
+
+async function getOCRText(url: string) {
+  return "";
+}
+
+interface ProcessFormDataResult {
+  // The transcript of the file
+  transcript: string;
+  // The URL of the file if it was uploaded
+  fileUrl?: string;
+}
+
+async function processFormData(formData: FormData): Promise<ProcessFormDataResult> {
+  // Check if the request has a transcript
+  if (formData.has("transcript")) {
+    return {
+      transcript: formData.get("transcript") as string,
+    }
+  }
+
   // Get the file from the request
-  const formData = await req.formData();
   if (!formData.has("file")) {
-    return Response.json({ error: "No file found" }, { status: 400 });
+    throw new Error("No file found");
   }
   const file = formData.get("file") as File;
-  if (!startsWithPrefixes(file.type, ["audio", "video"])) { 
-    return Response.json({ error: "Invalid file type" }, { status: 400 });
+  console.log(file.type);
+  if (!startsWithPrefixes(file.type, SUPPORTED_FILE_TYPES)) { 
+    throw new Error("Invalid file type");
   }
 
   // Upload the file to Supabase
@@ -18,13 +48,43 @@ export async function POST(req: NextRequest) {
   const result = await supabase.storage.from("files").upload(uniqueFilename, file);
   if (result.error) {
     console.error(result.error);
-    return Response.json({ error: "Failed to upload file" }, { status: 500 });
+    throw new Error("Failed to upload file");
   }
+  const fileUrl = supabase.storage.from("files").getPublicUrl(uniqueFilename).data.publicUrl;
+  
+  if (file.type.startsWith("audio")) {
+    return {
+      transcript: await transcribeAudio(fileUrl),
+      fileUrl,
+    };
+  }
+  else {
+    return {
+      transcript: await getOCRText(fileUrl),
+      fileUrl,
+    };
+  }
+}
 
-  const fileUrl = supabase.storage.from("files").getPublicUrl(uniqueFilename);
+interface ResponseData {
+  transcript: string;
+  fileUrl?: string;
+  analysis: AnalysisResult[];
+}
 
-  return NextResponse.json({ 
-    path: result.data.path,
-    fileUrl,
-  });
+export async function POST(req: NextRequest) {
+  try {
+    const formData = await req.formData();
+    const transcriptResult = await processFormData(formData);
+    const analysisResult = await analyzeTranscript(transcriptResult.transcript);
+
+    const data = {
+      transcript: transcriptResult.transcript,
+      fileUrl: transcriptResult.fileUrl,
+      analysis: analysisResult,
+    } satisfies ResponseData;
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json({ error: (error as Error).message }, { status: 400 });
+  }
 }
