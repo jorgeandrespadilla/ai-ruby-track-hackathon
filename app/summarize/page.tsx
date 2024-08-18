@@ -1,7 +1,6 @@
 "use client"
 
 import { ChevronLeft, Loader2 } from 'lucide-react'
-import type { Metadata } from 'next'
 import * as React from 'react'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
@@ -14,20 +13,12 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { NavBar } from './(components)/nav-bar'
 import FilePreview from './(components)/FilePreview'
+import { AnalysisResult } from '@/lib/types'
 
 export const summarizeSchema = z.object({
   transcript: z.string().min(10),
 })
 type FormData = z.infer<typeof summarizeSchema>
-
-interface ResponseData {
-  isComplaint: boolean;
-  summary: string | null;
-  product: string | null;
-  sub_product: string | null;
-  rating: string | null;
-  company: string | null;
-}
 
 export default function SummarizePage() {
   const form = useForm<FormData>({
@@ -39,7 +30,7 @@ export default function SummarizePage() {
 
   const [isTextInput, setIsTextInput] = React.useState<boolean>(true)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [analysis, setAnalysis] = React.useState<ResponseData[] | null>(null)
+  const [analysis, setAnalysis] = React.useState<AnalysisResult[] | null>(null)
   const [numberComplaints, setNumberComplaints] = React.useState<number>(0)
   const [file, setFile] = React.useState<any>();
 
@@ -57,12 +48,12 @@ export default function SummarizePage() {
       })
     }
     const data: any = await res.json()
-    setAnalysis(data.result)
+    setAnalysis(data.analysis)
     getnumberComplaints(data.result);
 
   }
 
-  const getnumberComplaints = (array: ResponseData[]) => {
+  const getnumberComplaints = (array: AnalysisResult[]) => {
     let count = 0;
     array?.map((item) => {
       if (item.isComplaint) {
@@ -81,9 +72,34 @@ export default function SummarizePage() {
     setFile(file);
   }
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event?.target?.files?.[0];
+    if (file) {
+      onFileSelect(file);
+    }
+    event.target.value = '';
+  }
+
   //Storing the file
   const uploadFile = (file: any) => {
-
+    const formData = new FormData();
+    formData.append('file', file);
+    setIsLoading(true)
+    fetch('/api/analyze', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        setIsLoading(false)
+        console.log(result)
+      })
+      .catch((error) => {
+        setIsLoading(false)
+        toast.error('Error', {
+          description: 'Something went wrong. Please try again.',
+        })
+      });
   }
 
   return (
@@ -191,12 +207,7 @@ export default function SummarizePage() {
                           <strong>Click to upload</strong></span> or drag and drop</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Images, audio and video files. (MAX. 10MB)</p>
                     </div>
-                    <input id="dropzone-file" type="file" className="hidden" onChange={(event) => {
-                      const file = event?.target?.files?.[0];
-                      if (file) {
-                        onFileSelect(file);
-                      }
-                    }} />
+                    <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} />
                   </label>
                 </div>
 
