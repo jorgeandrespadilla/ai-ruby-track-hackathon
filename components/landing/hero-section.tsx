@@ -58,7 +58,7 @@ export default function HeroSection() {
             delay={11}
             colorFrom="var(--color-one)"
             colorTo="var(--color-two)"
-          />
+            />
 
           <img
             src="/placeholder.webp"
@@ -70,6 +70,7 @@ export default function HeroSection() {
             alt="Hero Image"
             className="block relative w-full h-full  rounded-[inherit] border object-contain dark:hidden"
           />
+
         </div>
       </div>
     </section>

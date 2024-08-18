@@ -89,7 +89,7 @@ const cardData: CardDataProps[] = [
         content:
             "Automatically detect and summarize customer complaints with advanced AI, ensuring quick and accurate responses.",
         image:
-            "https://images.unsplash.com/photo-1562071433-0686c833f4b5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8",
+            "complaint3.png",
     },
     {
         id: 2,
@@ -113,7 +113,7 @@ const cardData: CardDataProps[] = [
         content:
             "Handle complaints from text, voice, video, and images for comprehensive analysis and categorization.",
         image:
-            "https://images.unsplash.com/photo-1603415526960-f2e7c80a7acb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D",
+            "multimodal2.png",
     },
 ];
 
