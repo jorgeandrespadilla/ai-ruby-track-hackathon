@@ -6,3 +6,10 @@ export interface AnalysisResult {
   rating: string | null;
   company: string | null;
 }
+
+export interface ResponseData {
+  transcript: string;
+  fileUrl?: string;
+  analysis: AnalysisResult[];
+  userId: number;
+}

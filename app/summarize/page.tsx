@@ -14,6 +14,8 @@ import { toast } from 'sonner'
 import { NavBar } from './(components)/nav-bar'
 import FilePreview from './(components)/FilePreview'
 import { AnalysisResult } from '@/lib/types'
+import { saveTranscriptAndComplaints } from '@/db/queries'
+import { useUser } from '@clerk/nextjs'
 
 export const summarizeSchema = z.object({
   transcript: z.string().min(10),
@@ -21,6 +23,8 @@ export const summarizeSchema = z.object({
 type FormData = z.infer<typeof summarizeSchema>
 
 export default function SummarizePage() {
+  const { user, isLoaded } = useUser();
+
   const form = useForm<FormData>({
     resolver: zodResolver(summarizeSchema),
     defaultValues: {
@@ -36,10 +40,19 @@ export default function SummarizePage() {
 
   async function onSubmit(_data: FormData) {
     setIsLoading(true)
-    const res = await fetch('api/summarize', {
+
+    // Create formData object
+    const formData = new FormData();
+    if (isTextInput) {
+      formData.append('transcript', _data.transcript);
+    } else if (file) {
+      formData.append('file', file);
+    }
+
+    const res: Response = await fetch('/api/analyze', {
       method: 'POST',
-      body: JSON.stringify(_data),
-    })
+      body: formData,
+    });
 
     setIsLoading(false)
     if (!res.ok) {
@@ -48,10 +61,40 @@ export default function SummarizePage() {
       })
     }
     const data: any = await res.json()
-    setAnalysis(data.analysis)
-    getnumberComplaints(data.result);
+
+    setAnalysis(data.analysis);
+    getnumberComplaints(data.analysis);
+
+    saveComplaints(data);
 
   }
+
+  const saveComplaints = async (data: any) => {
+    if (!isLoaded || !user) {
+      return toast.error('User not loaded or logged in.');
+    }
+
+    const responseData = {
+      userId: user.id, 
+      transcript: data.transcript,
+      fileUrl: data.fileUrl ? data.fileUrl : null,
+      analysis: data.analysis,
+    };
+
+    console.log(responseData);
+
+    const res = await fetch('/api/savedata', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(responseData),
+    });
+
+    if (!res.ok) {
+      toast.error('Failed to save complaints');
+    }
+  };
 
   const getnumberComplaints = (array: AnalysisResult[]) => {
     let count = 0;
@@ -78,28 +121,6 @@ export default function SummarizePage() {
       onFileSelect(file);
     }
     event.target.value = '';
-  }
-
-  //Storing the file
-  const uploadFile = (file: any) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    setIsLoading(true)
-    fetch('/api/analyze', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        setIsLoading(false)
-        console.log(result)
-      })
-      .catch((error) => {
-        setIsLoading(false)
-        toast.error('Error', {
-          description: 'Something went wrong. Please try again.',
-        })
-      });
   }
 
   return (
@@ -156,8 +177,8 @@ export default function SummarizePage() {
             </div>
 
           </div>
-          {isTextInput ?
-            (<div className='grid gap-6'>
+          {isTextInput ? (
+            <div className="grid gap-6">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                   <div className="grid gap-4">
@@ -166,7 +187,6 @@ export default function SummarizePage() {
                       name="transcript"
                       render={({ field }) => (
                         <FormItem>
-                          {/* <FormLabel>Email</FormLabel> */}
                           <FormControl>
                             <Textarea
                               rows={10}
@@ -181,49 +201,44 @@ export default function SummarizePage() {
                         </FormItem>
                       )}
                     />
-
-                    <button
-                      type="submit"
-                      className={cn(buttonVariants())}
-                      disabled={isLoading}
-                    >
+                    <button type="submit" className={cn(buttonVariants())} disabled={isLoading}>
                       {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
                       Submit
                     </button>
                   </div>
                 </form>
               </Form>
-            </div>)
-            : (
-              <div className='grid gap-4'>
-                <div className="flex items-center justify-center w-full">
-                  <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-blue-300 border-dashed rounded-lg cursor-pointer bg-blue-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-blue-100 dark:border-gray-600 dark:hover:border-gray-500">
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <svg className="w-12 h-12 mb-4 text-blue-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                      </svg>
-                      <p className="mb-2 text-lg md:text-xl text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">
-                          <strong>Click to upload</strong></span> or drag and drop</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Images, audio and video files. (MAX. 10MB)</p>
-                    </div>
-                    <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} />
-                  </label>
-                </div>
-
-                {file ? <FilePreview file={file} removeFile={() => setFile(null)} /> : null}
-                <div className="flex w-full">
-                  <button
-                    className={cn(buttonVariants(), 'w-full')}
-                    disabled={isLoading || !file}
-                    onClick={() => { uploadFile(file); setFile(null); }}
-                  >
-                    {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
-                    Upload
-                  </button>
-                </div>
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              <div className="flex items-center justify-center w-full">
+                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-blue-300 border-dashed rounded-lg cursor-pointer bg-blue-50 hover:bg-blue-100">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg className="w-12 h-12 mb-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                    </svg>
+                    <p className="mb-2 text-lg text-gray-500">
+                      <strong>Click to upload</strong> or drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500">Images, audio and video files. (MAX. 10MB)</p>
+                  </div>
+                  <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} />
+                </label>
               </div>
-            )}
+
+              {file ? <FilePreview file={file} removeFile={() => setFile(null)} /> : null}
+              <div className="flex w-full">
+                <button className={cn(buttonVariants(), 'w-full')} disabled={isLoading || !file}
+                  onClick={() => {
+                    setFile(null);
+                    onSubmit({ transcript: '' });
+                  }}>
+                  {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
+                  Upload
+                </button>
+              </div>
+            </div>
+          )}
           <div>
             {analysis && (
               <div>

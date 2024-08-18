@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabase';
 import { generateUniqueFilename, startsWithPrefixes } from '@/lib/utils';
 import { analyzeTranscript } from '@/lib/ai';
 import { transcribeAudio } from '@/lib/assemblyai';
+import { getOCRText } from '@/lib/getOCRText';
 import { AnalysisResult } from '@/lib/types';
 
 const SUPPORTED_FILE_TYPES = [
@@ -13,10 +14,6 @@ const SUPPORTED_FILE_TYPES = [
   "audio/wav",
   "audio/mp3",
 ];
-
-async function getOCRText(url: string) {
-  return "";
-}
 
 interface ProcessFormDataResult {
   // The transcript of the file
@@ -39,7 +36,7 @@ async function processFormData(formData: FormData): Promise<ProcessFormDataResul
   }
   const file = formData.get("file") as File;
   console.log(file.type);
-  if (!startsWithPrefixes(file.type, SUPPORTED_FILE_TYPES)) { 
+  if (!startsWithPrefixes(file.type, SUPPORTED_FILE_TYPES)) {
     throw new Error("Invalid file type");
   }
 
@@ -51,7 +48,7 @@ async function processFormData(formData: FormData): Promise<ProcessFormDataResul
     throw new Error("Failed to upload file");
   }
   const fileUrl = supabase.storage.from("files").getPublicUrl(uniqueFilename).data.publicUrl;
-  
+
   if (file.type.startsWith("audio")) {
     return {
       transcript: await transcribeAudio(fileUrl),
