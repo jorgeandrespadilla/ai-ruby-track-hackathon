@@ -40,10 +40,13 @@ This project is built for the Ruby Track of the Headstarter AI Hackathon. The pr
   - **Text + Picture**: Analyze text and accompanying images (e.g., email with a screenshot).
 
 ## Technologies Used
-- **Programming Language**: TypeScript, Python
-- **Frameworks**: Next.js (React), FastAPI
-- **APIs**: OpenAI GPT-4, Speech-to-Text API
+- **Programming Language**: TypeScript
+- **Frameworks**: Next.js (React), LangChain
+- **APIs**: OpenAI GPT-4, AssemblyAI Speech-to-Text API, Google Vision API
 - **Databases**: PostgreSQL (Relational Database), Pinecone (Vector Database)
+
+## Architecture Diagram
+![image](https://github.com/user-attachments/assets/dfb60c4c-70e8-4daf-8130-7d933cad6761)
 
 ## Getting Started
 
