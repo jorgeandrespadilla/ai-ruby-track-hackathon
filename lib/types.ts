@@ -6,3 +6,8 @@ export interface AnalysisResult {
   rating: string | null;
   company: string | null;
 }
+
+export interface SimilarComplaint {
+  complaintId: string;
+  complaintSummary: string;
+}

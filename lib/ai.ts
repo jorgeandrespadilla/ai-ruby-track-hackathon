@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
-import { AnalysisResult } from './types';
-import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
+import { AnalysisResult, SimilarComplaint } from './types';
+import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
 import { Pinecone as PineconeClient } from "@pinecone-database/pinecone";
 import { Document as VectorDocument } from "langchain/document";
@@ -131,13 +131,8 @@ export async function ingestComplaint(data: IngestComplaintRequest) {
 }
 
 interface RetrieveSimilarComplaintsRequest {
-  complaint: string;
-  maxResults: number;
-}
-
-interface SimilarComplaint {
-  complaintId: string;
   complaintSummary: string;
+  maxResults: number;
 }
 
 export async function retrieveSimilarComplaints(data: RetrieveSimilarComplaintsRequest) {
@@ -148,7 +143,7 @@ export async function retrieveSimilarComplaints(data: RetrieveSimilarComplaintsR
     chunkSize: 1000,
     encodingName: "cl100k_base",
   });
-  const splits = await textSplitter.splitText(data.complaint);
+  const splits = await textSplitter.splitText(data.complaintSummary);
   const firstSplit = splits[0];
 
 
