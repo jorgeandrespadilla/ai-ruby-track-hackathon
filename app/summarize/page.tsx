@@ -22,6 +22,17 @@ type FormData = z.infer<typeof summarizeSchema>
 interface ResponseData {
   isComplaint: boolean;
   summary: string | null;
+  type: string;
+  product: string | null;
+  date_summary_created: string | null;
+  sub_product: string | null;
+  tags: string | null;
+  company_response: string | null;
+  rating: string | null;
+  company: string | null;
+  date_received: string | null;
+  status: string | null;
+  sort: number | null;
 }
 
 export default function SummarizePage() {
@@ -32,7 +43,8 @@ export default function SummarizePage() {
     },
   })
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [analysis, setAnalysis] =  React.useState<ResponseData | null>(null)
+  const [analysis, setAnalysis] = React.useState<ResponseData[] | null>(null)
+  const [numberComplaints, setNumberComplaints] = React.useState<number>(0)
 
   async function onSubmit(_data: FormData) {
     setIsLoading(true)
@@ -47,9 +59,20 @@ export default function SummarizePage() {
         description: 'Your request failed. Please try again.',
       })
     }
-    const data:ResponseData = await res.json()
-    setAnalysis(data)
+    const data: any = await res.json()
+    setAnalysis(data.result)
+    getnumberComplaints(data.result);
 
+  }
+
+  const getnumberComplaints = (array: ResponseData[]) => {
+    let count = 0;
+    array?.map((item) => {
+      if (item.isComplaint) {
+        count++;
+      }
+    });
+    setNumberComplaints(count);
   }
 
   return (
@@ -114,11 +137,34 @@ export default function SummarizePage() {
           </div>
           <div>
             {analysis && (
-              <div className="mt-6 p-4 border rounded-md shadow-sm bg-blue-950 mb-6">
-                <h2 className="text-lg font-semibold ">Analysis Result</h2>
-                <p className="text-sm"><strong>Summary:</strong> {analysis.summary || 'This was not a complaint'}</p>
+              <div>
+                <h2 className="text-lg font-semibold">Analysis Result</h2>
+                <div className="mt-3 p-4 border rounded-md shadow-sm bg-[var(--color-three)]">
+                  <p className="text-sm">
+                    Out of {analysis.length} reviews, {numberComplaints} are complaints.
+                    {numberComplaints === 0 ? ' Great job!' : null}
+                  </p>
+                </div>
               </div>
             )}
+          </div>
+          <div>
+            {analysis && analysis.map((item, index) => {
+              if (item.isComplaint) {
+                return (
+                  <div key={index}>
+                    <div className="mt-6 p-4 border rounded-md shadow-sm bg-blue-950 mb-6">
+                      <p className="text-sm"><strong>Company:</strong> {item.company || 'No company mentioned'}</p>
+                      <p className="text-sm"><strong>Product:</strong> {item.product}</p>
+                      <p className="text-sm"><strong>Product category:</strong> {item.sub_product || 'No sub-product found.'}</p>
+                      <p className="text-sm"><strong>Rating:</strong> {item.rating || 'No rating specified'}</p>
+                      <p className="text-sm"><strong>Summary:</strong> {item.summary}</p>
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            })}
           </div>
         </div>
       </div>

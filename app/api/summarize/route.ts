@@ -18,7 +18,7 @@ Return the result in the following JSON format:[
     "sub_product": "string | null",  // Sub-product category. Can be null if not a complaint.
     "tags": "string | null",  // Tags associated with the complaint, can be null.
     "company_response": "string | null",  // Response from the company. Can be null if not a complaint.
-    "submitted_via": "string | null",  // Channel through which the complaint was submitted. Can be null if not a complaint.
+    "rating": "string | null",  // Rating of the product or service. Can be null if not a complaint.
     "company": "string | null",  // Name of the company. Can be null if not a complaint.
     "date_received": "string | null",  // Date when the complaint was received. Can be null if not a complaint.
     "status": "string | null",  // Status of the complaint: open, in review, closed. Can be null if not a complaint.
@@ -78,9 +78,9 @@ export async function POST(req: NextRequest) {
                             "type": ["string", "null"],
                             "description": "Response from the company. Can be null if not a complaint."
                         },
-                        "submitted_via": {
+                        "rating": {
                             "type": ["string", "null"],
-                            "description": "Channel through which the complaint was submitted. Can be null if not a complaint."
+                            "description": "Rating of the product or service. Can be null if not a complaint."
                         },
                         "company": {
                             "type": ["string", "null"],
