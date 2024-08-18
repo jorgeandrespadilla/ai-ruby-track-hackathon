@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { generateUniqueFilename, startsWithPrefixes } from '@/lib/utils';
-import { analyzeTranscript } from '@/lib/ai';
+import { analyzeTranscript, ingestComplaint } from '@/lib/ai';
 import { transcribeAudio } from '@/lib/assemblyai';
 import { getOCRText } from '@/lib/getOCRText';
 import { AnalysisResult } from '@/lib/types';
@@ -74,6 +74,17 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const transcriptResult = await processFormData(formData);
     const analysisResult = await analyzeTranscript(transcriptResult.transcript);
+    
+    // Ingest complaints into the RAG vector store
+    for (const result of analysisResult) {
+      if (!result.isComplaint || !result.summary) {
+        continue;
+      }
+      await ingestComplaint({
+        complaintId: "123", // TODO: Replace with actual complaint ID
+        complaintSummary: result.summary!,
+      });
+    }
 
     const data = {
       transcript: transcriptResult.transcript,

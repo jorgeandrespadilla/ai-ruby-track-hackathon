@@ -7,6 +7,11 @@ export interface AnalysisResult {
   company: string | null;
 }
 
+export interface SimilarComplaint {
+  complaintId: string;
+  complaintSummary: string;
+}
+
 export interface ResponseData {
   transcript: string;
   fileUrl?: string;
