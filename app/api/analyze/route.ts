@@ -13,6 +13,7 @@ const SUPPORTED_FILE_TYPES = [
   "image/webp",
   "audio/wav",
   "audio/mp3",
+  "audio/mpeg",
 ];
 
 interface ProcessFormDataResult {
