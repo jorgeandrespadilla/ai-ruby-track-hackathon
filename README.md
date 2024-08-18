@@ -45,6 +45,9 @@ This project is built for the Ruby Track of the Headstarter AI Hackathon. The pr
 - **APIs**: OpenAI GPT-4, AssemblyAI Speech-to-Text API, Google Vision API
 - **Databases**: PostgreSQL (Relational Database), Pinecone (Vector Database)
 
+## Architecture Diagram
+![image](https://github.com/user-attachments/assets/dfb60c4c-70e8-4daf-8130-7d933cad6761)
+
 ## Getting Started
 
 1. Clone the repository.
