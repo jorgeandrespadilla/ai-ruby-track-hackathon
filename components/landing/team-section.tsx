@@ -13,32 +13,32 @@ export default function TeamSection() {
             <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-16">
               <li className="flex flex-col items-center">
                 <img
-                  src={`https://your-image-url.com/photo1.jpg`}
-                  alt="Team Member 1"
+                  src="/images/member_jorgeandrespadilla.jpeg"
+                  alt="Jorge Andres Padilla"
                   className="h-24 w-24 rounded-full object-cover"
                 />
                 <p className="mt-2 text-center text-sm font-medium text-white">Jorge Andres Padilla</p>
               </li>
               <li className="flex flex-col items-center">
                 <img
-                  src={`https://your-image-url.com/photo2.jpg`}
-                  alt="Team Member 2"
+                  src="/images/member_gabrielapadilla.jpeg"
+                  alt="Gabriela Padilla"
                   className="h-24 w-24 rounded-full object-cover"
                 />
                 <p className="mt-2 text-center text-sm font-medium text-white">Gabriela Padilla</p>
               </li>
               <li className="flex flex-col items-center">
                 <img
-                  src={`https://your-image-url.com/photo3.jpg`}
-                  alt="Team Member 3"
+                  src="/images/member_jennifermena.jpeg"
+                  alt="Jennifer Mena"
                   className="h-24 w-24 rounded-full object-cover"
                 />
                 <p className="mt-2 text-center text-sm font-medium text-white">Jennifer Mena</p>
               </li>
               <li className="flex flex-col items-center">
                 <img
-                  src={`https://your-image-url.com/photo4.jpg`}
-                  alt="Team Member 4"
+                  src="/images/member_guleednuh.jpeg"
+                  alt="Guleed Nuh"
                   className="h-24 w-24 rounded-full object-cover"
                 />
                 <p className="mt-2 text-center text-sm font-medium text-white">Guleed Nuh</p>
