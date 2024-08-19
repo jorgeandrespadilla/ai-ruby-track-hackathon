@@ -17,7 +17,7 @@ export default function HeroSection() {
     >
       <div className="backdrop-filter-[12px] inline-flex h-7 items-center justify-between rounded-full border border-white/5 bg-white/10 px-3 text-xs text-white dark:text-black transition-all ease-in hover:cursor-pointer hover:bg-white/20 group gap-1 translate-y-[-1rem] animate-fade-in opacity-0">
         <TextShimmer className="inline-flex items-center justify-center">
-          <img src="https://cdn3.emoji.gg/emojis/1676_blue_sparkles.png" width="13px" height="13px" alt="blue_sparkles"></img>
+          <img src="/images/blue_sparkles.png" width="13px" height="13px" alt="blue_sparkles"></img>
           <span className="pl-1">  A smart way to manage feedback</span>{" "}
           <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
         </TextShimmer>
@@ -34,7 +34,7 @@ export default function HeroSection() {
       </h1>
       <p className="mb-12 text-lg tracking-tight text-gray-400 md:text-xl text-balance translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms]">
         Efficiently handle and prioritize complaints with an AI-driven tool
-        <br className="hidden md:block" /> for text, voice**, image, and video** inputs.
+        <br className="hidden md:block" /> for text, image and voice inputs.
       </p>
       <Button className="bg-[var(--color-one)] dark:text-white translate-y-[-1rem] animate-fade-in gap-1 rounded-lg text-black opacity-0 transition ease-in-out [--animation-delay:600ms] hover:bg-[var(--color-one-darker)] hover:text-black">
         <span className="font-semibold">Get Started Now</span>
@@ -61,13 +61,13 @@ export default function HeroSection() {
             />
 
           <img
-            src="/placeholder.webp"
-            alt="Hero Image"
+            src="/images/preview.jpeg"
+            alt="Preview Image"
             className="hidden relative w-full h-full rounded-[inherit] border object-contain dark:block"
           />
           <img
-            src="/placeholder.webp"
-            alt="Hero Image"
+            src="/images/preview.jpeg"
+            alt="Preview Image"
             className="block relative w-full h-full  rounded-[inherit] border object-contain dark:hidden"
           />
 

@@ -32,6 +32,8 @@ const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
     ),
 );
 
+AccordionItem.displayName = "AccordionItem";
+
 type AccordionTriggerProps = {
     children: React.ReactNode;
     className?: string;
@@ -54,6 +56,8 @@ const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
     ),
 );
 
+AccordionTrigger.displayName = "AccordionTrigger";
+
 type AccordionContentProps = {
     children: ReactNode;
     className?: string;
@@ -74,6 +78,8 @@ const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
     ),
 );
 
+AccordionContent.displayName = "AccordionContent";
+
 type CardDataProps = {
     id: number;
     title: string;
@@ -89,7 +95,7 @@ const cardData: CardDataProps[] = [
         content:
             "Automatically detect and summarize customer complaints with advanced AI, ensuring quick and accurate responses.",
         image:
-            "complaint3.png",
+            "/images/features_complaint-analysis.png",
     },
     {
         id: 2,
@@ -97,7 +103,7 @@ const cardData: CardDataProps[] = [
         content:
             "Assign complaints to the correct categories automatically, reducing manual work and errors.",
         image:
-            "https://images.unsplash.com/photo-1571042283422-203e15c57114?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D",
+            "/images/features_auto-categorization.png",
     },
     {
         id: 3,
@@ -105,7 +111,7 @@ const cardData: CardDataProps[] = [
         content:
             "Match voice recordings with relevant past complaints using a Retrieval-Augmented Generation pipeline.",
         image:
-            "https://images.unsplash.com/photo-1581092918689-85d44457a9a7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D",
+            "/images/features_rag-pipeline.png",
     },
     {
         id: 4,
@@ -113,7 +119,7 @@ const cardData: CardDataProps[] = [
         content:
             "Handle complaints from text, voice, video, and images for comprehensive analysis and categorization.",
         image:
-            "multimodal2.png",
+            "/images/features_multimodal.png",
     },
 ];
 
