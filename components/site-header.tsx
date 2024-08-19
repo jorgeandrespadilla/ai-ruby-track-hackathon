@@ -109,7 +109,7 @@ export function SiteHeader() {
                   buttonVariants({ variant: "secondary" }),
                   "text-sm"
                 )}
-                href="/summarize"
+                href="/dashboard"
               >
                 Portal
               </Link>
